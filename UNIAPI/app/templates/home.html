@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Painel{% endblock %}
+{% block content %}
+  <section class="card">
+    <h1>Bem-vindo, {{ user }}!</h1>
+    <p>Você está logado com sucesso.</p>
+    <a href="/logout">Sair</a>
+  </section>
+{% endblock %}
