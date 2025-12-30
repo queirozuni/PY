@@ -3,7 +3,42 @@
 {% block content %}
   <section class="card">
     <h1>Bem-vindo, {{ user }}!</h1>
-    <p>Você está logado com sucesso.</p>
-    <a href="/logout">Sair</a>
+    <p>Gerencie o cronograma de backup, restore e notificações por email.</p>
+    <div class="grid">
+      <a class="btn" href="/backup-schedules">Agendar backups</a>
+      <a class="btn" href="/restore-schedules">Agendar restores</a>
+      <a class="btn" href="/email-config">Configurar emails</a>
+      <a class="btn" href="/runs">Ver histórico</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Últimas execuções</h2>
+    {% if runs %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Agendamento</th>
+            <th>Status</th>
+            <th>Início</th>
+            <th>Fim</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for run in runs %}
+          <tr>
+            <td>{{ run.task_type }}</td>
+            <td>#{{ run.schedule_id }}</td>
+            <td>{{ run.status or '-' }}</td>
+            <td>{{ run.started_at }}</td>
+            <td>{{ run.finished_at or '-' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Nenhuma execução registrada ainda.</p>
+    {% endif %}
   </section>
 {% endblock %}

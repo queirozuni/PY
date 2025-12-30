@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Restores{% endblock %}
+{% block content %}
+  <section class="card">
+    <h1>Agendamentos de Restore</h1>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <label>
+        Nome
+        <input name="name" required />
+      </label>
+      <label>
+        Caminho do backup (zip ou sql)
+        <input name="backup_path" required />
+      </label>
+      <label>
+        Banco de homologação
+        <input name="target_database" required />
+      </label>
+      <label>
+        Usuário MySQL
+        <input name="mysql_user" required />
+      </label>
+      <label>
+        Senha MySQL
+        <input name="mysql_pass" type="password" required />
+      </label>
+      <label>
+        Host (opcional)
+        <input name="mysql_host" />
+      </label>
+      <div class="form-row">
+        <label>
+          Hora (0-23)
+          <input name="cron_hour" type="number" min="0" max="23" required />
+        </label>
+        <label>
+          Minuto (0-59)
+          <input name="cron_minute" type="number" min="0" max="59" required />
+        </label>
+      </div>
+      <label class="checkbox">
+        <input type="checkbox" name="enabled" checked />
+        Ativo
+      </label>
+      <button type="submit">Salvar agendamento</button>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Agendamentos existentes</h2>
+    {% if schedules %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Backup</th>
+          <th>Horário</th>
+          <th>Status</th>
+          <th>Última execução</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for schedule in schedules %}
+        <tr>
+          <td>{{ schedule.name }}</td>
+          <td>{{ schedule.backup_path }}</td>
+          <td>{{ "%02d"|format(schedule.cron_hour) }}:{{ "%02d"|format(schedule.cron_minute) }}</td>
+          <td>{{ "Ativo" if schedule.enabled else "Inativo" }}</td>
+          <td>{{ schedule.last_run_at or "-" }}</td>
+          <td>
+            <a class="btn btn-secondary" href="/restore-schedules/{{ schedule.id }}">Editar</a>
+            <form method="post" action="/restore-schedules/{{ schedule.id }}/run" class="inline-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+              <button type="submit" class="btn btn-ghost">Executar agora</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p class="muted">Nenhum agendamento cadastrado.</p>
+    {% endif %}
+  </section>
+{% endblock %}

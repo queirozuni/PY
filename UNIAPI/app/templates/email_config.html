@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Emails{% endblock %}
+{% block content %}
+  <section class="card">
+    <h1>Configuração de Email</h1>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <label>
+        Servidor SMTP
+        <input name="smtp_host" value="{{ config.smtp_host if config else '' }}" required />
+      </label>
+      <label>
+        Porta SMTP
+        <input name="smtp_port" type="number" value="{{ config.smtp_port if config else 587 }}" required />
+      </label>
+      <label>
+        Usuário SMTP
+        <input name="smtp_user" value="{{ config.smtp_user if config else '' }}" />
+      </label>
+      <label>
+        Senha SMTP
+        <input name="smtp_pass" type="password" value="{{ config.smtp_pass if config else '' }}" />
+      </label>
+      <label>
+        Remetente
+        <input name="sender" value="{{ config.sender if config else '' }}" required />
+      </label>
+      <label>
+        Destinatários (separe por vírgula)
+        <input name="recipients" value="{{ config.recipients if config else '' }}" required />
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="use_tls" {% if not config or config.use_tls %}checked{% endif %} />
+        Usar TLS
+      </label>
+      <button type="submit">Salvar configuração</button>
+    </form>
+  </section>
+{% endblock %}
