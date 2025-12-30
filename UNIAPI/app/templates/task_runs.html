@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Histórico{% endblock %}
+{% block content %}
+  <section class="card">
+    <h1>Histórico de Execuções</h1>
+    {% if runs %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tipo</th>
+          <th>Agendamento</th>
+          <th>Status</th>
+          <th>Mensagem</th>
+          <th>Início</th>
+          <th>Fim</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for run in runs %}
+        <tr>
+          <td>{{ run.id }}</td>
+          <td>{{ run.task_type }}</td>
+          <td>#{{ run.schedule_id }}</td>
+          <td>{{ run.status or "-" }}</td>
+          <td>{{ run.message or "-" }}</td>
+          <td>{{ run.started_at }}</td>
+          <td>{{ run.finished_at or "-" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+      <p class="muted">Nenhum registro encontrado.</p>
+    {% endif %}
+  </section>
+{% endblock %}

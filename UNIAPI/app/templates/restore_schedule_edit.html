@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Editar Restore{% endblock %}
+{% block content %}
+  <section class="card">
+    <h1>Editar agendamento de restore</h1>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+      <label>
+        Nome
+        <input name="name" value="{{ schedule.name }}" required />
+      </label>
+      <label>
+        Caminho do backup (zip ou sql)
+        <input name="backup_path" value="{{ schedule.backup_path }}" required />
+      </label>
+      <label>
+        Banco de homologação
+        <input name="target_database" value="{{ schedule.target_database }}" required />
+      </label>
+      <label>
+        Usuário MySQL
+        <input name="mysql_user" value="{{ schedule.mysql_user }}" required />
+      </label>
+      <label>
+        Senha MySQL
+        <input name="mysql_pass" type="password" value="{{ schedule.mysql_pass }}" required />
+      </label>
+      <label>
+        Host (opcional)
+        <input name="mysql_host" value="{{ schedule.mysql_host or '' }}" />
+      </label>
+      <div class="form-row">
+        <label>
+          Hora (0-23)
+          <input name="cron_hour" type="number" min="0" max="23" value="{{ schedule.cron_hour }}" required />
+        </label>
+        <label>
+          Minuto (0-59)
+          <input name="cron_minute" type="number" min="0" max="59" value="{{ schedule.cron_minute }}" required />
+        </label>
+      </div>
+      <label class="checkbox">
+        <input type="checkbox" name="enabled" {% if schedule.enabled %}checked{% endif %} />
+        Ativo
+      </label>
+      <div class="actions">
+        <button type="submit">Atualizar</button>
+        <a class="btn btn-secondary" href="/restore-schedules">Voltar</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}

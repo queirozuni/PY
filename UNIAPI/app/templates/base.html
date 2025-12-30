@@ -7,6 +7,19 @@
 </head>
 <body>
   <main class="container">
+    {% if user is defined %}
+    <nav class="nav">
+      <div class="nav-brand">UniApi Backup</div>
+      <div class="nav-links">
+        <a href="/">Painel</a>
+        <a href="/backup-schedules">Backups</a>
+        <a href="/restore-schedules">Restores</a>
+        <a href="/email-config">Emails</a>
+        <a href="/runs">Histórico</a>
+        <a href="/logout">Sair</a>
+      </div>
+    </nav>
+    {% endif %}
     {% block content %}{% endblock %}
   </main>
 </body>
